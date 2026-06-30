@@ -46,6 +46,8 @@ html, body {
   const MAX_LEVEL = 5;
   const MONSTER_STOP_RADIUS = 178;
   const TOWER_MAX_HP = 120;
+  const STORE_URL_ANDROID = 'https://play.google.com/store/apps/details?id=com.gravitygamehub.rocrush.aos';
+  const STORE_URL_IOS = 'https://apps.apple.com/us/app/ragnarok-crush-match-merge/id6740312911';
   const UI_FONT = '"Arial Rounded MT Bold", "Microsoft YaHei UI", "Microsoft YaHei", Arial, sans-serif';
   const DEBUG_GRID_CONTROLS = false;
   const BOARD_CALIBRATION_KEY = 'roc_center_tower_board_v3';
@@ -512,6 +514,22 @@ html, body {
       // Browser audio may be locked until the first user gesture.
     }
   }
+
+  function getStoreUrl() {
+    const ua = navigator.userAgent || '';
+    return /iphone|ipad|ipod/i.test(ua) ? STORE_URL_IOS : STORE_URL_ANDROID;
+  }
+
+  function openStore() {
+    const storeUrl = window.ROC_STORE_URL || getStoreUrl();
+    if (window.mraid && typeof window.mraid.open === 'function') {
+      window.mraid.open(storeUrl);
+      return;
+    }
+    window.open(storeUrl, '_blank');
+  }
+
+  window.ROC_OPEN_STORE = openStore;
 
   function resize() {
     const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
